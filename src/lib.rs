@@ -1,4 +1,4 @@
-#![deny(missing_docs)]
+
 #![deny(warnings)]
 
 //! # Docktape
@@ -35,6 +35,7 @@ pub use std::io::{self, Write};
 pub use serde_json::Value;
 pub use docker::Docker;
 pub use hyper::Method;
+pub use image::Image;
 
 #[cfg(not(target_os = "windows"))]
 pub use hyperlocal::UnixConnector;
