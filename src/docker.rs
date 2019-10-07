@@ -132,13 +132,16 @@ impl Docker{
                     for _dig in c["RepoDigests"].as_array().unwrap(){
                         _repo_digests.push(_dig.to_string());
                     }
+                    println!("c[created] is {:#?}", c["Created"]);
+                    println!("c[ParentId] is {:#?}", c["ParentId"]);
+                    
                     images.push(Image{
                         id: c["Id"].to_string(),
-                        created: c["Created"].to_string().parse::<u64>().ok(),
-                        parent_id: Some(c["ParentId"].to_string()),
-                        repo_digests : Some(_repo_digests),
-                        size: c["Size"].to_string().parse::<u64>().ok(),
-                        virtual_size: c["VirtuaSize"].to_string().parse::<u64>().ok(),
+                        //created: c["Created"].to_string().parse::<u64>().ok(),
+                        // parent_id: Some(c["ParentId"].to_string()),
+                        // repo_digests : Some(_repo_digests),
+                        // size: c["Size"].to_string().parse::<u64>().ok(),
+                        // virtual_size: c["VirtuaSize"].to_string().parse::<u64>().ok(),
                         //labels : std::collections::HashMap<String, String>::new(),
                         repo_tags: Some(tags) ,
                         ..Default::default()
