@@ -137,11 +137,11 @@ impl Docker{
                     
                     images.push(Image{
                         id: c["Id"].to_string(),
-                        //created: c["Created"].to_string().parse::<u64>().ok(),
-                        // parent_id: Some(c["ParentId"].to_string()),
-                        // repo_digests : Some(_repo_digests),
-                        // size: c["Size"].to_string().parse::<u64>().ok(),
-                        // virtual_size: c["VirtuaSize"].to_string().parse::<u64>().ok(),
+                        created: c["Created"].to_string().parse::<u64>().ok(),
+                        parent_id: Some(c["ParentId"].to_string()),
+                        repo_digests : Some(_repo_digests),
+                        size: c["Size"].to_string().parse::<u64>().ok(),
+                        virtual_size: c["VirtuaSize"].to_string().parse::<u64>().ok(),
                         //labels : std::collections::HashMap<String, String>::new(),
                         repo_tags: Some(tags) ,
                         ..Default::default()
@@ -157,6 +157,10 @@ impl Docker{
         }
     }
 
+    pub fn get_images_value(&mut self) -> Option<Value>{
+        let uri = self.create_uri("/images/json");
+        self.socket.request(uri, Get, None)
+    }
     /// Inspects a Docker image
     /// # Example
     ///
