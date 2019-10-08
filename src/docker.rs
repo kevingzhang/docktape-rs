@@ -66,6 +66,7 @@ impl Docker{
 
         match self.socket.request(uri, Get, None) {
             Some(info) => {
+            println!("inside get_info info is {:#?}", &info);
                Some(info)
             },
             None =>{
@@ -121,6 +122,7 @@ impl Docker{
 
         match self.socket.request(uri, Get, None) {
             Some(imgs) => {
+                //println!("inside get_images is {:#?}", &imgs);
                 let mut images = Vec::new();
                 let arr_images: &Vec<Value> = imgs.as_array().unwrap();
                 for c in arr_images{
