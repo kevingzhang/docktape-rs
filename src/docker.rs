@@ -34,13 +34,9 @@ impl Docker{
     /// Create the URI
     #[cfg(not(target_os = "windows"))]
     fn create_uri(&self, path: &str) -> HyperUri{
-        println!("create_url socket address is {:#?}, ", &self.socket.address());
-        println!("inside create_uri path is {:#?}, ", &path);
         if self.socket.is_unix(){
-            println!("socket is unix");
             return HyperlocalUri::new(self.socket.address(), path).into();
         }
-        println!("socket is not unix");
         format!("{}{}", self.socket.address(), path).parse().unwrap()
     }
 
@@ -69,7 +65,6 @@ impl Docker{
 
         match self.socket.request(uri, Get, None) {
             Some(info) => {
-            println!("inside get_info info is {:#?}", &info);
                Some(info)
             },
             None =>{
@@ -137,9 +132,6 @@ impl Docker{
                     for _dig in c["RepoDigests"].as_array().unwrap(){
                         _repo_digests.push(_dig.to_string());
                     }
-                    println!("c[created] is {:#?}", c["Created"]);
-                    println!("c[ParentId] is {:#?}", c["ParentId"]);
-                    
                     images.push(Image{
                         id: c["Id"].to_string(),
                         created: c["Created"].to_string().parse::<u64>().ok(),

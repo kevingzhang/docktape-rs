@@ -88,12 +88,10 @@ impl Socket{
     /// Execute the request on the client
     #[cfg(not(target_os = "windows"))]
     pub fn request(&mut self, uri: Uri, method: Method, body: Option<Body>) -> Option<Value>{
-        println!("enter request Uri, Method, Body: {:#?}, {:#?}, {:#?}, ", &uri, &method, &body);
         let mut core = Core::new().unwrap();
         let handle = core.handle();
 
         if self.is_unix() {
-            println!("is unix");
             let client = Client::configure().connector(UnixConnector::new(handle)).build(&core.handle());
             let mut request = Request::new(method, uri);
             request.headers_mut().set(ContentType::json());
@@ -102,7 +100,6 @@ impl Socket{
             }
 
             let work = client.request(request).and_then(|res| {
-                println!("res is {:#?}, ", &res);
                 res.body().concat2().and_then(move |body| {
                     let v: Value = serde_json::from_slice(&body).map_err(|e| {
                         io::Error::new(
@@ -116,7 +113,6 @@ impl Socket{
             });
             match core.run(work){
                 Ok(item) =>{
-                    println!("item is {:#?}, ", &item);
                     Some(item)
                 },
                 Err(_)=>{
@@ -125,7 +121,6 @@ impl Socket{
             }
         }
         else{
-            println!("not unix");
             let client = Client::configure().connector(HttpConnector::new(4, &handle)).build(&core.handle());
             let mut request = Request::new(method, uri);
             request.headers_mut().set(ContentType::json());
