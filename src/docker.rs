@@ -34,10 +34,13 @@ impl Docker{
     /// Create the URI
     #[cfg(not(target_os = "windows"))]
     fn create_uri(&self, path: &str) -> HyperUri{
+        println!("create_url socket address is {:#?}, ", &self.socket.address());
+        println!("inside create_uri path is {:#?}, ", &path);
         if self.socket.is_unix(){
+            println!("socket is unix");
             return HyperlocalUri::new(self.socket.address(), path).into();
         }
-
+        println!("socket is not unix");
         format!("{}{}", self.socket.address(), path).parse().unwrap()
     }
 
